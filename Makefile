@@ -7,7 +7,8 @@ build:
 .PHONY: run
 run: build
 	docker run --name $(SALT_PLAYGROUND_IMAGE_NAME) --mount type=bind,source=`pwd`/salt,target=/srv/salt \
-	--mount type=bind,source=`pwd`/pillar,target=/srv/pillar -d $(SALT_PLAYGROUND_IMAGE_NAME)
+	--mount type=bind,source=`pwd`/pillar,target=/srv/pillar --mount type=bind,source=`pwd`/config/minion,target=/etc/salt/minion \
+	-d $(SALT_PLAYGROUND_IMAGE_NAME)
 
 .PHONY: stop
 stop:
