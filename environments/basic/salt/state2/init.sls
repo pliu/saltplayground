@@ -15,6 +15,7 @@
     - contents: |
         {{ ret | indent(8) }}
         {{ nvme_ssds | join(',') | indent(8) }}
+        {{ salt['test_module.test_func']() }}
 
   {% endif %}
   {% set cmd = 'cat /proc/mounts | grep ' + nvme_ssds[0] + '[[:space:]]' %}

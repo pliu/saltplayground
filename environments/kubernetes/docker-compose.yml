@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+  etcd1:
+    image: k8s_base
+    restart: always
+    container_name: etcd1
+    hostname: etcd1
+    privileged: true
+    volumes:
+      - ./salt:/srv/salt
+      - ./pillar:/srv/pillar
+      - ./config/etcd:/etc/salt/minion
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  etcd2:
+    image: k8s_base
+    restart: always
+    container_name: etcd2
+    hostname: etcd2
+    privileged: true
+    volumes:
+      - ./salt:/srv/salt
+      - ./pillar:/srv/pillar
+      - ./config/etcd:/etc/salt/minion
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+  etcd3:
+    image: k8s_base
+    restart: always
+    container_name: etcd3
+    hostname: etcd3
+    privileged: true
+    volumes:
+      - ./salt:/srv/salt
+      - ./pillar:/srv/pillar
+      - ./config/etcd:/etc/salt/minion
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro

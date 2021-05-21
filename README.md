@@ -11,6 +11,7 @@ Examples of things to experiment with:
 - writing Salt states
 - factoring out environment-specific variables into pillars
 - Jinja-based control flow
+- custom modules to extend Salt functionality
 
 ## Components used in setting up this project
 ```
@@ -20,19 +21,26 @@ docker 19.03.6
 ## Repository structure
 ```
 root
-|- config
-|  |- minion
-|- pillar
-|  |- dev
-|  |  |- ...
-|  |- prod
-|  |  |- ...
-|- salt
+|- environments
 |  |- ...
-|- Dockerfile
+|     |- config
+|     |  |- ...
+|     |- pillar
+|     |  |- ...
+|     |- salt
+|     |  |- _modules?
+|     |  |  |- ...
+|     |  |- ...
+|     |  |- top.sls
+|     |- docker-compose.yaml?
+|     |- Dockerfile
+|     |- README.md
 |- Makefile
 |- README.md
 ```
+Current environments include:
+- [basic](environments/basic/README.md)
+- [kubernetes](environments/kubernetes/README.md)
 
 ## How it works
 The minion file contains the configuration Salt uses. This project runs Salt in masterless mode (i.e., the minion does not connect to a central service that contains the Salt states and pillars, instead using local state and pillar files). The configuration also specifies where Salt searches for Salt states and pillars as well as the environments those states and pillars are associated with (e.g., Salt states found under /srv/salt are associated with the "base" environment while pillars found under /srv/pillar/dev are associated with the "dev" environment). Finally, the minion configuration's  "environment" and "pillarenv" attributes determine which Salt states and pillars to use.
@@ -60,9 +68,6 @@ salt-call pillar.items
 List grain values (to be run inside the test container):
 salt-call grains.items
 
-Start test container:
-make run
-
-Stop test container:
-make stop
+Sync modules (to be run inside the test container; required to update modules unless calling state.apply):
+salt-call saltutil.sync_modules
 ```

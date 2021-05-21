@@ -1,0 +1,16 @@
+apiVersion: "kubeadm.k8s.io/v1beta2"
+kind: ClusterConfiguration
+etcd:
+    local:
+        serverCertSANs:
+        - "{{ grains['host'] }}"
+        peerCertSANs:
+        - "{{ grains['host'] }}"
+        extraArgs:
+            initial-cluster: etcd1=https://etcd1:2380,etcd2=https://etcd2:2380,etcd3=https://etcd3:2380
+            initial-cluster-state: new
+            name: {{ grains['host'] }}
+            listen-peer-urls: https://{{ grains['host'] }}:2380
+            listen-client-urls: https://{{ grains['host'] }}:2379
+            advertise-client-urls: https://{{ grains['host'] }}:2379
+            initial-advertise-peer-urls: https://{{ grains['host'] }}:2380
