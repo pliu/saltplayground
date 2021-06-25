@@ -7,6 +7,8 @@ file_roots:
 pillar_roots:
   dev:
     - /srv/pillar/dev
+  qa:
+    - /srv/pillar/qa
   prod:
     - /srv/pillar/prod
 
@@ -16,4 +18,4 @@ grains:
     - role2
 
 environment: base
-pillarenv: dev
+pillarenv: qa
