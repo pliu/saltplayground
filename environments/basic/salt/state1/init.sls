@@ -18,3 +18,9 @@
         {{ value }}
 {% endfor %}
 {% endif %}
+
+/etc/salt/grains:
+  file.managed:
+    - source: salt://state1/files/grains.tmpl
+    - template: jinja
+

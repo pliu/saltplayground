@@ -1,8 +1,8 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 RUN apt -y update; apt clean all
 
-RUN apt -y install systemd curl; apt clean all; \
+RUN apt -y install systemd curl nano; apt clean all; \
 (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
 rm -f /lib/systemd/system/multi-user.target.wants/*;\
 rm -f /etc/systemd/system/*.wants/*;\
@@ -12,8 +12,8 @@ rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
 rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 
-RUN curl -L https://bootstrap.saltstack.com -o bootstrap_salt.sh && \
+RUN curl -L https://github.com/saltstack/salt-bootstrap/releases/latest/download/bootstrap-salt.sh -o bootstrap_salt.sh && \
     chmod +x /bootstrap_salt.sh && \
-    /bootstrap_salt.sh
+    /bootstrap_salt.sh -X -d
 
 CMD ["/sbin/init"]
