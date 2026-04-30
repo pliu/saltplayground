@@ -1,5 +1,5 @@
 {% set nvme_ssds = [] %}
-{% for ssd in grains['SSDs'] %}
+{% for ssd in grains['disks'] %}
   {% if ssd.startswith('nvme') %}
     {% do nvme_ssds.append(ssd) %}
   {% endif %}
@@ -25,4 +25,24 @@
   file.touch
 
   {% endif %}
+{% endif %}
+
+{% if 'custom_grains' in pillar %}
+/tmp/pillar:
+  file.managed:
+    - source: salt://state2/files/pillar_out.tmpl
+    - template: jinja
+    - defaults:
+        conditional_pillar: {{ pillar.get('conditional_pillar', 'not_set') }}
+    - require:
+      - test: reload_pillars
+
+run_script:
+  cmd.script:
+    - name: salt://state2/files/script
+    - template: jinja
+    - defaults:
+        conditional_pillar: {{ pillar.get('conditional_pillar', 'not_set') }}
+    - require:
+      - test: reload_pillars
 {% endif %}

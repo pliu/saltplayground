@@ -1,0 +1,8 @@
+{% from 'state2/map.jinja' import salt_file_value with context %}
+
+{{- conditional_pillar }}
+
+{{ salt_file_value }}
+
+{% set in_file_value = pillar.get('conditional_pillar', 'not_set') %}
+{{ in_file_value }}
